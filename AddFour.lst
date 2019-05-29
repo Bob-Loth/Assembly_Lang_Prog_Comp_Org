@@ -1,0 +1,98 @@
+Microsoft (R) Macro Assembler Version 14.16.27027.1	    02/25/19 15:34:16
+..\AddTwoSum.asm					     Page 1 - 1
+
+
+				; AddTwoSum.asm - Chapter 3 example.
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 00000000		sum dword 0
+ 00000004 000007D0		valueA dword 2000
+ 00000008 FFFFFF9C		valueB dword -100
+ 0000000C 000003E8		valueC dword 1000
+ 00000010 FFFFFE0C		valueD dword -500
+
+ 00000014 00000000		ssum sdword 0
+ 00000018 000007D0		svalueA sdword 2000
+ 0000001C FFFFFF9C		svalueB sdword -100
+ 00000020 000003E8		svalueC sdword 1000
+ 00000024 FFFFFE0C		svalueD sdword -500      //USES 40 bytes to store 10 dwords
+ 00000000			.code                                 //address followed by R is location of .data dwords
+ 00000000			main proc
+				  ;unsigned version
+ 00000000  A1 00000004 R		mov eax, valueA              //A1 and 8B are move commands to eax and ebx, respectively
+ 00000005  03 05 00000008 R	  add eax, valueB             //03 appears to be add code
+
+ 0000000B  8B 1D 0000000C R	  mov ebx, valueC            //1D appears to be ebx code
+ 00000011  03 1D 00000010 R	  add ebx, valueD            //add the value at location 10, where valueD is stored, to the value in register ebx.
+
+ 00000017  A3 00000000 R	  mov sum, eax                                  //new instruction called, seems to add more bytes when moving from register to SUM
+ 0000001C  29 1D 00000000 R	  sub sum, ebx                 // 1D corresponds to EBX, 0 to SUM, so 29 must be code for subtraction of a register EBX from a variable SUM
+				  ;signed version
+ 00000022  A1 00000018 R	  mov eax, svalueA                           //very similar, adds same amount of bytes to memory used, same add code, location refers to svalueA
+ 00000027  03 05 0000001C R	  add eax, svalueB          //identical to corresponding signed command, only difference is how the data is represented
+
+ 0000002D  8B 1D 00000020 R	  mov ebx, svalueC
+ 00000033  03 1D 00000024 R	  add ebx, svalueD
+
+ 00000039  A3 00000014 R	  mov ssum, eax                              //Summary: Add, Mov, and Sub codes are identical, whether dealing with a signed or unsigned number. The registers display the data in the same way.
+ 0000003E  29 1D 00000014 R	  sub ssum, ebx                
+					invoke ExitProcess,0
+ 00000044  6A 00	   *	    push   +000000000h
+ 00000046  E8 00000000 E   *	    call   ExitProcess
+ 0000004B			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27027.1	    02/25/19 15:34:16
+..\AddTwoSum.asm					     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000028 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000004B DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000004B Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+ssum . . . . . . . . . . . . . .	DWord	 00000014 _DATA	
+sum  . . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+svalueA  . . . . . . . . . . . .	DWord	 00000018 _DATA	
+svalueB  . . . . . . . . . . . .	DWord	 0000001C _DATA	
+svalueC  . . . . . . . . . . . .	DWord	 00000020 _DATA	
+svalueD  . . . . . . . . . . . .	DWord	 00000024 _DATA	
+valueA . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+valueB . . . . . . . . . . . . .	DWord	 00000008 _DATA	
+valueC . . . . . . . . . . . . .	DWord	 0000000C _DATA	
+valueD . . . . . . . . . . . . .	DWord	 00000010 _DATA	
+
+	   0 Warnings
+	   0 Errors
